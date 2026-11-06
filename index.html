@@ -56,7 +56,14 @@ body{font-family:'Inter','Segoe UI',Arial,sans-serif;color:#e8e8e8;-webkit-user-
 .row .nm{flex:1;min-width:0;font-weight:600;font-size:14px;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .row .sb{font-size:12px;color:#8d8d8d;white-space:nowrap}
 .badge{height:22px;padding:0 8px;border-radius:6px;display:inline-flex;align-items:center;font-size:10px;letter-spacing:1.5px;font-weight:600;background:rgba(245,197,107,.12);color:#f5c56b}
-.donors{max-height:300px;overflow:hidden}
+.upd{max-height:560px;overflow:hidden}
+.entry{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:10px;padding:14px 16px;margin-bottom:8px}
+.entry:last-child{margin-bottom:0}
+.entry .t{font-size:14px;font-weight:700;color:#fff;display:flex;align-items:center;gap:10px}
+.entry .t:before{content:"";width:6px;height:6px;border-radius:50%;background:#fff;opacity:.8}
+.entry .d{font-size:11px;letter-spacing:2px;color:#8d8d8d;margin:4px 0 0 16px}
+.entry ul{margin:8px 0 0 0;padding-left:30px;color:#b0b0b0;font-size:13px;line-height:1.5}
+.entry ul li::marker{color:#5d5d5d}
 
 /* rappel */
 .tip{position:absolute;right:48px;bottom:30px;width:340px}
@@ -79,12 +86,8 @@ body{font-family:'Inter','Segoe UI',Arial,sans-serif;color:#e8e8e8;-webkit-user-
 
 <div class="side">
   <div class="box">
-    <div class="hd">ÉQUIPE DU PROJET</div>
-    <div class="bd" id="team"></div>
-  </div>
-  <div class="box">
-    <div class="hd">MERCI À NOS DONATEURS</div>
-    <div class="bd donors" id="donors"></div>
+    <div class="hd">DERNIÈRES MISES À JOUR</div>
+    <div class="bd upd" id="upd"></div>
   </div>
 </div>
 
@@ -106,8 +109,12 @@ body{font-family:'Inter','Segoe UI',Arial,sans-serif;color:#e8e8e8;-webkit-user-
 
 <script>
 // ================= À MODIFIER =================
-var EQUIPE = ["Parbli", "Aykoh"];
-var DONATEURS = ["Pseudo1", "Pseudo2", "Pseudo3"];
+// Mises à jour : [titre, date, [lignes...]] (la plus récente en premier)
+var MAJ = [
+  ["Ordinateur du site", "06/11", ["Caméras corrigées", "Annonces visibles sur la tablette"]],
+  ["Tablette", "05/11", ["Nouvel onglet État du site"]],
+  ["Tenues", "31/10", ["Textures des PM corrigées", "Attachements TFA gratuits"]]
+];
 var RAPPELS = [
   "Respecte le règlement du serveur et le rôle de ton métier.",
   "Les annonces du site se font depuis l'ordinateur de l'Administration.",
@@ -122,11 +129,10 @@ function $(i){return document.getElementById(i)}
 function esc(t){return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
 function txt(i,t){$(i).innerHTML=esc(t)}
 
-var h="",i;
-for(i=0;i<EQUIPE.length;i++) h+='<div class="row"><div class="nm">'+esc(EQUIPE[i])+'</div></div>';
-$("team").innerHTML=h; h="";
-for(i=0;i<DONATEURS.length;i++) h+='<div class="row"><div class="nm">'+esc(DONATEURS[i])+'</div></div>';
-$("donors").innerHTML=h||'<div class="row"><div class="nm">Merci à tous !</div></div>';
+var h="",i,j;
+for(i=0;i<MAJ.length;i++){h+='<div class="entry"><div class="t">'+esc(MAJ[i][0])+'</div>'+(MAJ[i][1]?'<div class="d">'+esc(MAJ[i][1])+'</div>':'')+'<ul>';
+ for(j=0;j<(MAJ[i][2]||[]).length;j++)h+='<li>'+esc(MAJ[i][2][j])+'</li>';h+='</ul></div>'}
+$("upd").innerHTML=h;
 
 // fonds
 var B=$("bgs"),els=[],k=0;
